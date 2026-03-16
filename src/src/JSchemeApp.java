@@ -9,16 +9,7 @@ import java.util.*;
  */
 public class JSchemeApp {
 
-    // -------------------------------------------------------------------------
-    // Types
-    //   Symbol  -> String
-    //   List    -> java.util.List<Object>
-    //   Number  -> Integer | Double
-    // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Parsing: tokenize -> read_from_tokens -> atom
-    // -------------------------------------------------------------------------
 
     /** Convert a Scheme source string into a list of string tokens. */
     public static List<String> tokenize(String s) {
@@ -67,9 +58,6 @@ public class JSchemeApp {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Standard environment
-    // -------------------------------------------------------------------------
 
     /** Build and return the global standard environment. */
     public static Env standardEnv() {
@@ -160,9 +148,6 @@ public class JSchemeApp {
         return env;
     }
 
-    // -------------------------------------------------------------------------
-    // Eval
-    // -------------------------------------------------------------------------
 
     /** The global environment, initialised once at start-up. */
     public static final Env GLOBAL_ENV = standardEnv();
@@ -313,9 +298,7 @@ public class JSchemeApp {
         return eval(parse(program), GLOBAL_ENV);
     }
 
-    // -------------------------------------------------------------------------
-    // REPL
-    // -------------------------------------------------------------------------
+
 
     /** Run an interactive Read-Eval-Print Loop. */
     public static void repl() {
@@ -338,9 +321,7 @@ public class JSchemeApp {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Display helpers
-    // -------------------------------------------------------------------------
+
 
     /** Convert a Java value back to a Lisp-readable string. */
     @SuppressWarnings("unchecked")
@@ -367,9 +348,6 @@ public class JSchemeApp {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Utility helpers
-    // -------------------------------------------------------------------------
 
     /** Evaluate a value as a boolean (everything except #f / false is truthy). */
     private static boolean isTruthy(Object val) {
@@ -402,26 +380,20 @@ public class JSchemeApp {
         throw new RuntimeException("Not a procedure: " + proc);
     }
 
-    // -------------------------------------------------------------------------
-    // Functional interface for built-in procedures
-    // -------------------------------------------------------------------------
+
 
     @FunctionalInterface
     public interface SchemeProc {
         Object apply(List<Object> args);
     }
 
-    // -------------------------------------------------------------------------
-    // Custom exception for parse errors
-    // -------------------------------------------------------------------------
+
 
     public static class SyntaxError extends RuntimeException {
         public SyntaxError(String msg) { super(msg); }
     }
 
-    // -------------------------------------------------------------------------
-    // Test suite
-    // -------------------------------------------------------------------------
+
 
     /** Run a Scheme expression and assert the printed result equals expected. */
     private static void test(String expr, String expected) {
@@ -444,7 +416,7 @@ public class JSchemeApp {
         test("(- 10 3)",           "7");
         test("(/ 10 2)",           "5");
         test("(+ 1 (* 2 3))",      "7");
-        test("(max 3 7 2)",        "7");   // note: our max takes 2 args; demonstrate 2-arg form
+        test("(max 3 7 2)",        "7");
         test("(max 3 7)",          "7");
         test("(min 3 7)",          "3");
         test("(abs -5)",           "5");
@@ -478,7 +450,7 @@ public class JSchemeApp {
         // Define + use
         eval("(define r 10)");
         test("r",                  "10");
-        test("(* pi (* r r))",     lispStr(eval("(* pi (* r r))")));  // just checks no crash
+        test("(* pi (* r r))",     lispStr(eval("(* pi (* r r))")));
 
         // Lambda
         eval("(define square (lambda (x) (* x x)))");
@@ -520,9 +492,7 @@ public class JSchemeApp {
         System.out.println("\n=== Test suite complete ===\n");
     }
 
-    // -------------------------------------------------------------------------
-    // Main entry point
-    // -------------------------------------------------------------------------
+
 
     public static void main(String[] args) {
         if (args.length > 0 && args[0].equals("--repl")) {
